@@ -2,6 +2,7 @@
 from selenium import webdriver
 import time
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 import pandas as pd
 # importing libraries to plot the wordcloud
@@ -11,12 +12,12 @@ import matplotlib.pyplot as plt
 
 # Variables
 # Linkedin ID and PASSWORD
-email = "email@email.com"
-password = "topsecret123"
+email = "saulodetp@gmail.com"
+password = "&Q3bxwakeup"
 
 # Write here the job position and local for search
-position = "delete this and write position here"
-local = "delete this and write job location here"
+position = "data scientist"
+local = "brazil"
 
 # example below:
 ## position = "data scientist"
@@ -39,9 +40,9 @@ driver.get('https://www.linkedin.com/login')
 time.sleep(2)
 
 # Search for login and password inputs, send credentions
-driver.find_element_by_id('username').send_keys(email)
-driver.find_element_by_id('password').send_keys(password)
-driver.find_element_by_id('password').send_keys(Keys.RETURN)
+driver.find_element(By.ID,'username').send_keys(email)
+driver.find_element(By.ID,'password').send_keys(password)
+driver.find_element(By.ID,'password').send_keys(Keys.RETURN)
 
 # Opening jobs webpage
 driver.get(
@@ -58,11 +59,11 @@ disc_list = []
 # linkedin show us 40 jobs pages, then the line below will repeat 40 times
 for i in range(1, 41):
     # click button to change the job list
-    driver.find_element_by_xpath(f'//button[@aria-label="Page {i}"]').click()
+    driver.find_element(By.XPATH, f'//button[@aria-label="Page {i}"]').click()
     # each page show us some jobs, sometimes show 25, others 13 or 21 ¯\_(ツ)_/¯
-    jobs_lists = driver.find_element_by_class_name(
-        'jobs-search-results__list')  # here we create a list with jobs
-    jobs = jobs_lists.find_elements_by_class_name(
+    jobs_lists = driver.find_element(By.CLASS_NAME,
+        'scaffold-layout__list-container')  # here we create a list with jobs
+    jobs = jobs_lists.find_element(By.CLASS_NAME,
         'jobs-search-results__list-item')  # here we select each job to count
     # waiting load
     time.sleep(1)
@@ -70,12 +71,12 @@ for i in range(1, 41):
     # in order to avoid errors that will stop the automation
     for job in range(1, len(jobs)+1):
         # job click
-        driver.find_element_by_xpath(
-            f'/html/body/div[5]/div[3]/div[3]/div[2]/div/section[1]/div/div/ul/li[{job}]/div/div/div[1]/div[2]/div[1]/a').click()
+        driver.find_element(By.XPATH, 
+            f'/html/body/div[4]/div[3]/div[4]/div/div/main/div/section[1]/div/ul/li[1]').click()
         # waiting load
         time.sleep(1)
         # select job description
-        job_desc = driver.find_element_by_class_name('jobs-search__right-rail')
+        job_desc = driver.find_element(By.CLASS_NAME, f'jobs-search__right-rail')
         # get text
         soup = BeautifulSoup(job_desc.get_attribute(
             'outerHTML'), 'html.parser')

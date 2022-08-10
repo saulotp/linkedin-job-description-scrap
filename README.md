@@ -1,5 +1,9 @@
 # linkedin-job-description-scrap
 
+===> UPDATED August, 8, 2022 <===
+
+run file called: LinkedinScrapping-updated
+
 This project is part of my study about data science, in this project we can select a position job, the script will get the job description on linkedin pages, and will plot a word cloud with most relevants requirements about the previous position selected.
 
 the datais about how the script runs is documented in:
