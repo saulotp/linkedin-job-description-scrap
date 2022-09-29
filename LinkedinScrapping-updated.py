@@ -5,33 +5,35 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 import pandas as pd
-# importing libraries to plot the wordcloud
+import os
+from dotenv import load_dotenv
 from wordcloud import WordCloud, STOPWORDS
 import matplotlib.pyplot as plt
 
 
 # Variables
 # Linkedin ID and PASSWORD
-email = "email@email.com"
-password = "topsecret123"
+
+load_dotenv()
+email = os.getenv('Linked_in_id')
+password = os.getenv('Linked_in_pass')
 
 # Write here the job position and local for search
-position = "your position here"
-local = "your local here"
+position = "Data engineer"
+local = "Thailand"
 
-# example below:
-## position = "data scientist"
-## local = "brazil"
 
 # formating to linkedin model
 position = position.replace(' ', "%20")
 
-
-
+# Set driver variable
+options = webdriver.ChromeOptions()
+options.add_argument("--start-maximized")
+options.add_argument('--log-level=3')
 
 # Open browser
-driver_path = "chromedriver.exe"
-driver = webdriver.Chrome(executable_path=driver_path)
+driver = webdriver.Chrome(executable_path="chromedriver",
+                          chrome_options=options)
 # Maximizing browser window to avoid hidden elements
 driver.set_window_size(1024, 600)
 driver.maximize_window()
