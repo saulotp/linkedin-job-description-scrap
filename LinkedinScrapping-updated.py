@@ -11,19 +11,19 @@ import matplotlib.pyplot as plt
 
 
 # Variables
-# Linkedin ID and PASSWORD
-email = "saulodetp@gmail.com"
-password = "B#L@hiS2zDcd@2b"
+## Linkedin ID and PASSWORD
+email = "email@email.com"
+password = "topsecret123"
 
 ## Write here the job position and local for search
-position = "data scientist"
-local = "brazil"
+position = "position here"
+local = "local here"
 
-# example below:
+##example below: 
 ## position = "data scientist"
 ## local = "brazil"
 
-# formating to linkedin model
+## formating to linkedin model
 position = position.replace(' ', "%20")
 
 
