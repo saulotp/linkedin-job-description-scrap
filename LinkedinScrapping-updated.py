@@ -77,12 +77,13 @@ for i in range(1, 41):
     
     for job in range(1, len(jobs)+1):
         # job click
-        driver.find_element(By.XPATH, 
-            f'/html/body/div[4]/div[3]/div[4]/div/div/main/div/section[1]/div/ul/li[{job}]').click()
+        driver.find_element(By.XPATH, f'/html/body/div[5]/div[3]/div[4]/div/div/main/div/section[1]/div/ul/li[{job}]').click()
+        time.sleep(1)
+        driver.find_element(By.XPATH, f'/html/body/div[5]/div[3]/div[4]/div/div/main/div/section[1]/div/ul/li[{job}]/div/div[1]/div[1]/div[2]/div[1]/a').click()        
         # waiting load
         time.sleep(1)
         # select job description
-        job_desc = driver.find_element(By.CLASS_NAME, f'jobs-description__container.m4')
+        job_desc = driver.find_element(By.ID, 'job-details')
         # get text
         soup = BeautifulSoup(job_desc.get_attribute(
             'outerHTML'), 'html.parser')
