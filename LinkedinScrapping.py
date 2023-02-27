@@ -88,33 +88,18 @@ for i in range(1, 41):
 df = pd.DataFrame(disc_list)
 
 # deleting useless words
-df = df.replace(['\n',
-                 '^.*?Expect',
-                 '^.*?Qualifications',
-                 '^.*?Required',
-                 '^.*?expected',
-                 '^.*?Responsibilities',
-                 '^.*?Requisitos',
-                 '^.*?Requirements',
-                 '^.*?Qualificações',
-                 '^.*?QualificationsRequired1',
-                 '^.*?você deve ter:',
-                 '^.*?experiência',
-                 '^.*?você:',
-                 '^.*?Desejável',
-                 '^.*?great',
-                 '^.*?Looking For',
-                 '^.*?ll Need',
-                 '^.*?Conhecimento',
-                 '^.*?se:',
-                 '^.*?habilidades',
-                 '^.*?se:',
-                 '^.*?REQUISITOS'
-                 ], '', regex=True)
+word_list = ['Expect', 'Qualifications', 'Required', 'expected', 'Responsibilities', 'Requisitos', 'Requirements', 'Qualificações', 'QualificationsRequired1', 'você deve ter:', 'experiência', 'você:', 
+             'Desejável', 'great', 'Looking For', 'll Need', 'Conhecimento', 'se:', 'habilidades', 'se:', 'REQUISITOS']
+# deleting useless words
+df = df.replace(f'\n', '', regex=True)
+
+for i in range (0, len(word_list)):
+    df = df.replace(f'^.*?{word_list[i]}', '', regex=True)
 
 
 # setup wordcloud
 stopwords = set(STOPWORDS)
+
 # selecting useless words
 badwords = {'gender', 'experience', 'application', 'Apply', 'salary', 'todos', 'os', 'company', 'identity', 'sexual', 'orientation',
             'de', 'orientação', 'sexual', 'gênero', 'committed', 'toda', 'client', 'conhecimento',
@@ -150,6 +135,7 @@ plt.figure(figsize=(10, 5))
 fig = plt.figure(1)
 plt.imshow(wordcloud)
 plt.axis('off')
+plt.savefig('wordcloud-job.png', dpi=300)
 plt.show()
 
 # exporting our dataframe to a csv file

@@ -16,8 +16,8 @@ email = "email@email.com"
 password = "topsecret123"
 
 ## Write here the job position and local for search
-position = "position here"
-local = "local here"
+position = "your position"
+local = "your local"
 
 ##example below: 
 ## position = "data scientist"
@@ -50,7 +50,7 @@ driver.find_element(By.ID,'password').send_keys(Keys.RETURN)
 driver.get(
     f"https://www.linkedin.com/jobs/search/?currentJobId=2662929045&geoId=106057199&keywords={position}&location={local}")
 # waiting load
-time.sleep(2)
+time.sleep(5)
 
 
 # creating a list where the descriptions will be stored
@@ -58,6 +58,7 @@ disc_list = []
 
 for i in range(1, 41):
     # click button to change the job list
+    print(f'Page {i}')
     driver.find_element(By.XPATH, f'//button[@aria-label="Page {i}"]').click()
     time.sleep(2)
     
@@ -76,12 +77,13 @@ for i in range(1, 41):
     # in order to avoid errors that will stop the automation
     
     for job in range(1, len(jobs)+1):
+        print(f'Job {job}')
         # job click
         driver.find_element(By.XPATH, f'/html/body/div[5]/div[3]/div[4]/div/div/main/div/section[1]/div/ul/li[{job}]').click()
-        time.sleep(1)
+        time.sleep(1.5)
         driver.find_element(By.XPATH, f'/html/body/div[5]/div[3]/div[4]/div/div/main/div/section[1]/div/ul/li[{job}]/div/div[1]/div[1]/div[2]/div[1]/a').click()        
         # waiting load
-        time.sleep(1)
+        time.sleep(1.5)
         # select job description
         job_desc = driver.find_element(By.ID, 'job-details')
         # get text
@@ -95,29 +97,13 @@ for i in range(1, 41):
 df = pd.DataFrame(disc_list)
 
 # deleting useless words
-df = df.replace(['\n',
-                 '^.*?Expect',
-                 '^.*?Qualifications',
-                 '^.*?Required',
-                 '^.*?expected',
-                 '^.*?Responsibilities',
-                 '^.*?Requisitos',
-                 '^.*?Requirements',
-                 '^.*?Qualificações',
-                 '^.*?QualificationsRequired1',
-                 '^.*?você deve ter:',
-                 '^.*?experiência',
-                 '^.*?você:',
-                 '^.*?Desejável',
-                 '^.*?great',
-                 '^.*?Looking For',
-                 '^.*?ll Need',
-                 '^.*?Conhecimento',
-                 '^.*?se:',
-                 '^.*?habilidades',
-                 '^.*?se:',
-                 '^.*?REQUISITOS'
-                 ], '', regex=True)
+word_list = ['Expect', 'Qualifications', 'Required', 'expected', 'Responsibilities', 'Requisitos', 'Requirements', 'Qualificações', 'QualificationsRequired1', 'você deve ter:', 'experiência', 'você:', 
+             'Desejável', 'great', 'Looking For', 'll Need', 'Conhecimento', 'se:', 'habilidades', 'se:', 'REQUISITOS']
+# deleting useless words
+df = df.replace(f'\n', '', regex=True)
+
+for i in range (0, len(word_list)):
+    df = df.replace(f'^.*?{word_list[i]}', '', regex=True)
 
 
 # setup wordcloud
@@ -146,18 +132,17 @@ stopwords.update(badwords)
 
 # plot parameters
 wordcloud = WordCloud(background_color='black',
+                      width=1600, height=800, 
                       stopwords=stopwords,
                       max_words=100,
-                      max_font_size=50,
+                      max_font_size=250,
                       random_state=42).generate("".join(df[0]))
 
 # Plot
-print(wordcloud)
-plt.figure(figsize=(10, 5))
-fig = plt.figure(1)
-plt.imshow(wordcloud)
-plt.axis('off')
-plt.show()
+plt.tight_layout(pad=0)
+plt.imshow(wordcloud, interpolation='bilinear')
+plt.savefig('wordcloud-job.png', dpi=300)
+plt.axis("off")
 
 # exporting our dataframe to a csv file
-df.to_csv('wordcloud-job.csv', sep=';')
+df.to_csv('wordcloud-job.csv', sep=';') 
