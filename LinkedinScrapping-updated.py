@@ -51,6 +51,10 @@ position = position.replace(' ', "%20")
 logger.info("Initializing Chrome browser...")
 service = Service(ChromeDriverManager().install())
 options = webdriver.ChromeOptions()
+options.add_argument('--headless')  # Run in headless mode
+options.add_argument('--no-sandbox')  # Required for running as root
+options.add_argument('--disable-dev-shm-usage')  # Overcome limited resource problems
+options.add_argument('--disable-gpu')  # Disable GPU hardware acceleration
 options.add_argument('--start-maximized')
 options.add_argument('--disable-blink-features=AutomationControlled')
 options.add_experimental_option("excludeSwitches", ["enable-automation"])
